@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Sopro e a Busca — Pr. João Alves</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cor-destaque: #1a0e00;
+  --cor-texto: #1c1108;
+  --cor-secundario: #3a2c14;
+  --fundo: #fdf8f0;
+  --fundo-card: rgba(180,140,60,0.07);
+  --fundo-card-hover: rgba(180,140,60,0.14);
+  --borda: rgba(120,80,20,0.22);
+  --borda-forte: rgba(120,80,20,0.55);
+  --dourado: #7a5010;
+  --dourado-claro: #a07020;
+  --creme: #f5edd8;
+  --nav-bg: rgba(253,248,240,0.96);
+  --sombra: 0 4px 24px rgba(100,60,0,0.10);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: clamp(1.28rem, 2.8vw, 1.5rem); }
+
+body {
+  font-family: 'EB Garamond', serif;
+  background: var(--fundo);
+  color: var(--cor-texto);
+  line-height: 1.82;
+  font-weight: 500;
+}
+
+/* BARRA DE PROGRESSO */
+#progressBar {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  background: linear-gradient(90deg, var(--dourado), var(--dourado-claro));
+  z-index: 9999; transition: width 0.1s linear;
+}
+
+/* NAVEGAÇÃO */
+#mainNav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borda);
+  box-shadow: 0 2px 12px rgba(100,60,0,0.07);
+  padding: 0.5rem 1rem;
+  display: flex; gap: 0.5rem; align-items: center;
+  overflow-x: auto; scrollbar-width: none;
+}
+#mainNav::-webkit-scrollbar { display: none; }
+.nav-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem; font-weight: 600;
+  color: #3a2c14;
+  background: none; border: 1px solid transparent;
+  border-radius: 6px; padding: 0.35rem 0.8rem;
+  cursor: pointer; white-space: nowrap; transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+.nav-btn:hover { color: var(--dourado); border-color: var(--borda); }
+.nav-btn.ativo { color: var(--cor-destaque); border-color: var(--dourado); background: rgba(122,80,16,0.08); }
+.nav-btn.indice-btn {
+  color: var(--fundo); background: var(--dourado);
+  border-color: var(--dourado);
+}
+.nav-btn.indice-btn:hover { background: var(--dourado-claro); }
+
+/* HERO */
+#hero {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #fdf8f0 0%, #f5edd8 50%, #ede0c4 100%);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 3rem 2rem;
+}
+#hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 40%, rgba(180,140,60,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 70%, rgba(122,80,16,0.08) 0%, transparent 55%);
+  pointer-events: none;
+}
+.hero-simbolo {
+  font-size: clamp(3.5rem, 10vw, 6rem);
+  animation: flutuar 3.5s ease-in-out infinite;
+  margin-bottom: 1.5rem; display: block;
+}
+@keyframes flutuar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+.hero-categoria {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--dourado); margin-bottom: 1rem;
+}
+.hero-titulo {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  color: var(--cor-destaque); font-weight: 700;
+  line-height: 1.25; margin-bottom: 1rem;
+  max-width: 800px;
+}
+.hero-subtitulo {
+  font-family: 'EB Garamond', serif;
+  font-style: italic; font-size: clamp(1rem, 2.2vw, 1.3rem);
+  color: var(--cor-secundario); margin-bottom: 1.5rem;
+  max-width: 600px;
+}
+.hero-autor {
+  font-family: 'Cinzel', serif;
+  font-size: 0.88rem; font-weight: 600;
+  color: var(--dourado); letter-spacing: 0.08em;
+}
+.hero-seta {
+  position: absolute; bottom: 2.5rem;
+  font-size: 1.5rem; color: var(--dourado);
+  animation: seta-pulsar 2s ease-in-out infinite;
+  cursor: pointer;
+}
+@keyframes seta-pulsar {
+  0%, 100% { transform: scaleY(1); opacity: 0.8; }
+  50% { transform: scaleY(1.3); opacity: 1; }
+}
+
+/* ÍNDICE */
+#indice {
+  padding: 4rem 2rem;
+  max-width: 900px; margin: 0 auto;
+}
+.indice-titulo {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  color: var(--cor-destaque); text-align: center;
+  margin-bottom: 0.5rem;
+}
+.indice-linha {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, var(--dourado), var(--dourado-claro));
+  margin: 0 auto 2.5rem;
+}
+.indice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.8rem;
+}
+.indice-btn {
+  background: var(--fundo-card);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 0.9rem 1.2rem;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 1rem;
+  transition: all 0.22s;
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem; font-weight: 600;
+  color: var(--cor-destaque);
+  text-align: left;
+}
+.indice-btn:hover {
+  border-color: var(--dourado);
+  color: var(--dourado);
+  transform: translateX(4px);
+  background: var(--fundo-card-hover);
+}
+.indice-num {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1rem; color: var(--dourado);
+  min-width: 1.5rem;
+}
+
+/* DIVISOR */
+.divisor {
+  display: flex; align-items: center;
+  gap: 1rem; padding: 1.5rem 2rem;
+  max-width: 700px; margin: 0 auto;
+}
+.divisor::before, .divisor::after {
+  content: ''; flex: 1;
+  height: 1px; background: var(--borda);
+}
+.divisor-glifo { color: var(--dourado); font-size: 0.9rem; }
+
+/* SEÇÕES */
+.section {
+  padding: 4rem 2rem;
+  max-width: 860px; margin: 0 auto;
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.section.visivel { opacity: 1; transform: translateY(0); }
+
+.badge {
+  display: inline-block;
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--dourado);
+  border: 1px solid rgba(122,80,16,0.35);
+  border-radius: 20px;
+  padding: 0.25rem 0.9rem;
+  margin-bottom: 1rem;
+}
+.section-titulo {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  color: #1a0e00; font-weight: 700;
+  line-height: 1.3; margin-bottom: 0.6rem;
+}
+.section-linha {
+  width: 50px; height: 2px;
+  background: linear-gradient(90deg, var(--dourado), var(--dourado-claro));
+  margin-bottom: 2rem;
+}
+
+/* CITAÇÃO */
+.citacao {
+  background: #ffe066;
+  border-left: 4px solid #c8920a;
+  border-radius: 0 8px 8px 0;
+  padding: 1.4rem 1.6rem 1.4rem 2.2rem;
+  position: relative; margin: 1.8rem 0;
+}
+.citacao::before {
+  content: '\201C';
+  position: absolute; top: -0.2rem; left: 0.5rem;
+  font-size: 3.5rem; font-family: 'EB Garamond', serif;
+  color: #7a5010; opacity: 0.4; line-height: 1;
+}
+.citacao p {
+  font-family: 'EB Garamond', serif;
+  font-style: italic; font-weight: 700;
+  font-size: 1.32rem; color: #1a0e00;
+  line-height: 1.72;
+}
+.citacao-ref {
+  font-family: 'Cinzel', serif;
+  font-weight: 600; font-size: 0.85rem;
+  color: #6b3f00; margin-top: 0.5rem;
+  display: block;
+}
+
+/* DESTAQUE BÍBLICO */
+.destaque-biblico {
+  background: #ffe066;
+  border: 1px solid rgba(160,112,32,0.35);
+  border-left: 4px solid #c8920a;
+  border-radius: 0 12px 12px 0;
+  padding: 1.6rem 2rem;
+  margin: 2rem auto;
+  max-width: 700px;
+  text-align: center;
+}
+.destaque-biblico p {
+  font-family: 'EB Garamond', serif;
+  font-style: italic; font-weight: 700;
+  font-size: clamp(1.1rem, 2.2vw, 1.32rem);
+  color: #1a0e00; line-height: 1.68;
+  margin-bottom: 0.5rem;
+}
+.destaque-biblico .ref {
+  font-family: 'Cinzel', serif;
+  font-weight: 600; font-size: 0.88rem;
+  color: #6b3f00;
+}
+
+/* CARDS */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.2rem; margin: 1.8rem 0;
+}
+.card {
+  background: var(--fundo-card);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 1.4rem 1.3rem;
+  transition: all 0.22s;
+}
+.card:hover {
+  border-color: var(--dourado);
+  transform: translateY(-3px);
+  box-shadow: var(--sombra);
+  background: var(--fundo-card-hover);
+}
+.card-icone { font-size: 1.8rem; margin-bottom: 0.6rem; display: block; }
+.card-titulo {
+  font-family: 'Cinzel', serif;
+  font-size: 0.88rem; font-weight: 600;
+  color: #1a0e00; margin-bottom: 0.5rem;
+}
+.card p { color: #1a0e00; font-weight: 500; font-size: 1.02em; }
+
+/* PASSOS */
+.passos { margin: 1.8rem 0; }
+.passo {
+  display: flex; gap: 1.2rem; align-items: flex-start;
+  margin-bottom: 1.5rem;
+  opacity: 0; transform: translateX(-20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.passo.visivel { opacity: 1; transform: translateX(0); }
+.passo-num {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem; font-weight: 700;
+  color: var(--dourado);
+  border: 2px solid var(--dourado);
+  border-radius: 50%;
+  width: 2.2rem; height: 2.2rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 0.15rem;
+}
+.passo-titulo {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem; font-weight: 600;
+  color: #1a0e00; margin-bottom: 0.3rem;
+}
+.passo p { color: #1a0e00; font-weight: 500; font-size: 1.02em; }
+
+/* TABELA */
+.tabela-wrap {
+  overflow-x: auto; border-radius: 10px;
+  border: 1px solid var(--borda); margin: 1.8rem 0;
+}
+table { width: 100%; border-collapse: collapse; }
+thead { background: rgba(122,80,16,0.10); }
+th {
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem; font-weight: 700;
+  text-transform: uppercase; color: var(--dourado);
+  padding: 0.9rem 1rem; letter-spacing: 0.06em;
+  text-align: left; border-bottom: 1px solid var(--borda);
+}
+td {
+  color: #1a0e00; font-weight: 500; font-size: 1em;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--borda);
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--fundo-card); }
+
+/* IMPLICAÇÕES */
+.implicacoes { margin: 1.8rem 0; }
+.implicacao {
+  display: flex; gap: 1rem; align-items: flex-start;
+  background: var(--fundo-card);
+  border-left: 2px solid var(--dourado);
+  border-radius: 0 8px 8px 0;
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 0.8rem;
+}
+.impl-ponto {
+  width: 10px; height: 10px;
+  background: var(--dourado);
+  border-radius: 50%; flex-shrink: 0;
+  margin-top: 0.5rem;
+  box-shadow: 0 0 8px rgba(160,112,32,0.4);
+}
+.impl-titulo {
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem; font-weight: 600;
+  text-transform: uppercase; color: #1a0e00;
+  margin-bottom: 0.25rem; letter-spacing: 0.05em;
+}
+.impl-texto { color: #1a0e00; font-weight: 500; font-size: 1.02em; }
+
+/* VOCABULÁRIO */
+.vocab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem; margin: 1.8rem 0;
+}
+.vocab-item {
+  background: var(--fundo-card);
+  border: 1px solid var(--borda);
+  border-radius: 8px; padding: 1.1rem;
+  transition: all 0.22s;
+}
+.vocab-item:hover {
+  border-color: var(--dourado);
+  transform: translateY(-2px);
+}
+.vocab-palavra {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.1rem; color: var(--dourado);
+  display: block; margin-bottom: 0.2rem;
+}
+.vocab-trans {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem; color: var(--dourado-claro);
+  display: block; margin-bottom: 0.4rem;
+}
+.vocab-def { color: #1a0e00; font-weight: 500; font-size: 0.95em; }
+
+/* ACORDEÃO */
+.acordeao { margin: 1.8rem 0; }
+.acord-item {
+  border: 1px solid var(--borda);
+  border-radius: 8px; margin-bottom: 0.6rem;
+  overflow: hidden;
+}
+.acord-cabecalho {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 1.2rem;
+  cursor: pointer; background: none;
+  font-family: 'Cinzel', serif;
+  font-size: 0.88rem; font-weight: 600;
+  color: #1a0e00; width: 100%; text-align: left;
+  border: none; transition: background 0.2s;
+}
+.acord-cabecalho:hover { background: var(--fundo-card); }
+.acord-seta {
+  color: var(--dourado); transition: transform 0.3s;
+  font-size: 1rem; flex-shrink: 0;
+}
+.acord-item.aberto .acord-seta { transform: rotate(180deg); }
+.acord-corpo {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.acord-item.aberto .acord-corpo { max-height: 800px; }
+.acord-conteudo {
+  padding: 0 1.2rem 1.2rem;
+  color: #1a0e00; font-weight: 500;
+  font-size: 1.05em; line-height: 1.82;
+}
+
+/* RODAPÉ */
+footer {
+  background: var(--creme);
+  border-top: 1px solid var(--borda);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+.footer-simbolo { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+.footer-nome {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1rem; color: var(--cor-destaque);
+  margin-bottom: 0.3rem;
+}
+.footer-local {
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem; font-weight: 600;
+  color: var(--dourado); margin-bottom: 0.5rem;
+}
+.footer-link {
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem; color: var(--dourado-claro);
+  text-decoration: none;
+}
+.footer-nota {
+  font-style: italic; font-size: 1em;
+  color: #3a2c14; font-weight: 500;
+  margin-top: 1rem; max-width: 500px;
+  margin-left: auto; margin-right: auto;
+}
+
+/* BOTÃO VOLTAR AO TOPO */
+#backTop {
+  position: fixed; bottom: 2rem; right: 1.5rem;
+  width: 2.8rem; height: 2.8rem;
+  background: var(--dourado); color: white;
+  border: none; border-radius: 50%;
+  font-size: 1.1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--sombra);
+  opacity: 0; transform: scale(0);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 200;
+}
+#backTop.visivel { opacity: 1; transform: scale(1); }
+#backTop:hover { transform: scale(1.1); }
+
+/* FLUXO */
+.fluxo {
+  display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: center;
+  gap: 0.5rem; margin: 2rem 0;
+}
+.fluxo-item {
+  background: var(--fundo-card);
+  border: 1px solid var(--borda);
+  border-radius: 8px; padding: 0.8rem 1.1rem;
+  text-align: center; min-width: 140px;
+}
+.fluxo-item .fi-titulo {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.8rem; color: var(--dourado);
+  display: block; margin-bottom: 0.2rem;
+}
+.fluxo-item .fi-texto {
+  font-size: 0.9em; color: #1a0e00;
+  font-weight: 500;
+}
+.fluxo-seta { color: var(--dourado); font-size: 1.3rem; flex-shrink: 0; }
+
+p { margin-bottom: 1.1rem; color: #1a0e00; font-weight: 500; }
+p:last-child { margin-bottom: 0; }
+
+@media (max-width: 600px) {
+  .section { padding: 3rem 1.2rem; }
+  #hero { padding: 2rem 1.2rem; }
+  .fluxo-seta { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+
+<div id="progressBar"></div>
+
+<nav id="mainNav">
+  <button class="nav-btn indice-btn" onclick="irPara('indice')">⊞ Índice</button>
+  <button class="nav-btn" data-nav="1" onclick="irPara('instinto')">I · O Instinto</button>
+  <button class="nav-btn" data-nav="2" onclick="irPara('sopro')">II · O Sopro</button>
+  <button class="nav-btn" data-nav="3" onclick="irPara('respiracao')">III · A Respiração</button>
+  <button class="nav-btn" data-nav="4" onclick="irPara('ceus')">IV · Os Três Céus</button>
+  <button class="nav-btn" data-nav="5" onclick="irPara('estrelas')">V · As Estrelas</button>
+  <button class="nav-btn" data-nav="6" onclick="irPara('eternidade')">VI · A Eternidade</button>
+  <button class="nav-btn" data-nav="7" onclick="irPara('arco')">VII · O Arco</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <span class="hero-simbolo">🕊️</span>
+  <p class="hero-categoria">Teologia · Ciência · Filosofia</p>
+  <h1 class="hero-titulo">O Sopro e a Busca</h1>
+  <p class="hero-subtitulo">Do instinto natural à presença de Deus — uma teologia da respiração do Gênesis ao Apocalipse</p>
+  <p class="hero-autor">Pr. João Alves</p>
+  <div class="hero-seta" onclick="irPara('indice')">↓</div>
+</section>
+
+<!-- ÍNDICE -->
+<section id="indice">
+  <h2 class="indice-titulo">Índice</h2>
+  <div class="indice-linha"></div>
+  <div class="indice-grid">
+    <button class="indice-btn" onclick="irPara('instinto')"><span class="indice-num">I</span> O Argumento do Instinto</button>
+    <button class="indice-btn" onclick="irPara('sopro')"><span class="indice-num">II</span> O Sopro Original — Gênesis 2:7</button>
+    <button class="indice-btn" onclick="irPara('respiracao')"><span class="indice-num">III</span> A Respiração como Metáfora</button>
+    <button class="indice-btn" onclick="irPara('ceus')"><span class="indice-num">IV</span> Os Três Céus e o Oxigênio</button>
+    <button class="indice-btn" onclick="irPara('estrelas')"><span class="indice-num">V</span> As Estrelas, Berçários do Oxigênio</button>
+    <button class="indice-btn" onclick="irPara('eternidade')"><span class="indice-num">VI</span> Apocalipse 21:23 — O Fim da Busca</button>
+    <button class="indice-btn" onclick="irPara('arco')"><span class="indice-num">VII</span> O Arco Completo</button>
+  </div>
+</section>
+
+<div class="divisor"><span class="divisor-glifo">✦</span></div>
+
+<!-- I — O INSTINTO -->
+<section class="section" id="instinto" data-nav="1">
+  <div class="badge">Filosofia · Natureza</div>
+  <h2 class="section-titulo">I · O Argumento do Instinto</h2>
+  <div class="section-linha"></div>
+
+  <p>Se o universo não tem propósito, não tem significado — de onde vem esse vazio, essa sede de sentido que habitamos? A resposta começa não na teologia, mas na observação da própria natureza.</p>
+
+  <div class="cards-grid">
+    <div class="card">
+      <span class="card-icone">🐢</span>
+      <p class="card-titulo">A Tartaruga do Mar</p>
+      <p>Nasce na areia sabendo que o seu lugar não é ali. Sem nenhum ensinamento, corre em direção ao oceano. O instinto aponta para algo real que existe fora dela.</p>
+    </div>
+    <div class="card">
+      <span class="card-icone">🐝</span>
+      <p class="card-titulo">A Abelha e o Pólen</p>
+      <p>Não fica dentro da colmeia. Sai em busca do pólen sem jamais ter aprendido o que é pólen. A necessidade precede o conhecimento — e o objeto da necessidade existe.</p>
+    </div>
+    <div class="card">
+      <span class="card-icone">🧠</span>
+      <p class="card-titulo">O Ser Humano</p>
+      <p>Único ser que respira e ainda assim sente falta. Tem saúde, alimento, relações — e ainda busca algo mais. O instinto de sentido aponta para além do visível.</p>
+    </div>
+  </div>
+
+  <div class="citacao">
+    <p>A necessidade da abelha pelo pólen, mas o pólen não existe? A necessidade da tartaruga pelo mar, mas o mar não existe? Tenho necessidade de eternidade — e a eternidade talvez não esteja neste plano que eu alcanço.</p>
+    <span class="citacao-ref">— Raciocínio central do argumento</span>
+  </div>
+
+  <div class="implicacoes">
+    <div class="implicacao">
+      <div class="impl-ponto"></div>
+      <div>
+        <p class="impl-titulo">Princípio da Correspondência</p>
+        <p class="impl-texto">A natureza não cria necessidades para coisas inexistentes. Se existe a fome, existe o alimento. Se existe a sede de sentido, existe o sentido.</p>
+      </div>
+    </div>
+    <div class="implicacao">
+      <div class="impl-ponto"></div>
+      <div>
+        <p class="impl-titulo">A Lógica do Instinto</p>
+        <p class="impl-texto">Todo instinto é informação. Informação requer pensamento. Pensamento requer uma mente. De onde vem essa informação gravada no ser?</p>
+      </div>
+    </div>
+    <div class="implicacao">
+      <div class="impl-ponto"></div>
+      <div>
+        <p class="impl-titulo">Extinção como Prova</p>
+        <p class="impl-texto">Se o pólen não existisse, a abelha já teria sido extinta. Se o oceano não existisse, a tartaruga já teria morrido. Se Deus não existisse, a busca espiritual seria evolutivamente inútil — e teria desaparecido.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divisor"><span class="divisor-glifo">✦</span></div>
+
+<!-- II — O SOPRO -->
+<section class="section" id="sopro" data-nav="2">
+  <div class="badge">Teologia · Gênesis</div>
+  <h2 class="section-titulo">II · O Sopro Original</h2>
+  <div class="section-linha"></div>
+
+  <div class="destaque-biblico">
+    <p>E formou o Senhor Deus o homem do pó da terra, e soprou nas suas narinas o fôlego da vida, e o homem foi feito alma vivente.</p>
+    <span class="ref">Gênesis 2:7</span>
+  </div>
+
+  <p>A cena mais densa da criação não é o surgimento da luz nem a formação dos oceanos. É este momento íntimo: Deus se inclina sobre a argila e sopra. Repare na sequência:</p>
+
+  <div class="passos">
+    <div class="passo">
+      <div class="passo-num">1</div>
+      <div>
+        <p class="passo-titulo">O Corpo Existia</p>
+        <p>Matéria, forma, estrutura — tudo presente. Mas inerte. O organismo estava completo e estava morto.</p>
+      </div>
+    </div>
+    <div class="passo">
+      <div class="passo-num">2</div>
+      <div>
+        <p class="passo-titulo">O Sopro Chegou</p>
+        <p>Deus soprou nas narinas. Não nas mãos, não no peito — nas narinas, a entrada do ar. O ato de dar vida é identificado com o ato de respirar.</p>
+      </div>
+    </div>
+    <div class="passo">
+      <div class="passo-num">3</div>
+      <div>
+        <p class="passo-titulo">O Homem Foi Feito Alma</p>
+        <p>Não apenas vivo — mas alma. A respiração não apenas anima o corpo; ela constitui a pessoa.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="vocab-grid">
+    <div class="vocab-item">
+      <span class="vocab-palavra">נְשָׁמָה</span>
+      <span class="vocab-trans">Neshamah</span>
+      <p class="vocab-def">Palavra hebraica que significa simultaneamente: fôlego, respiração, alma e espírito vital. Na cosmovisão hebraica, respirar e ter alma são a mesma coisa.</p>
+    </div>
+    <div class="vocab-item">
+      <span class="vocab-palavra">Inspiração</span>
+      <span class="vocab-trans">In + Spiritus (Latim)</span>
+      <p class="vocab-def">Receber o espírito para dentro. A própria língua preserva a memória teológica: inspirar é ser habitado pelo sopro divino.</p>
+    </div>
+    <div class="vocab-item">
+      <span class="vocab-palavra">Anime</span>
+      <span class="vocab-trans">Animus / Anima</span>
+      <p class="vocab-def">Do latim, significa sopro, alma, princípio vital. Toda linguagem sobre vida aponta para o mesmo: a vitalidade que Deus soprou no interior do homem.</p>
+    </div>
+  </div>
+
+  <p>Isso significa que a vida humana, em sua origem, <em>não é autossuficiente</em>. Ela foi recebida. E tudo que é recebido carrega a marca de quem deu. Cada respiração é o eco contínuo daquele primeiro sopro.</p>
+</section>
+
+<div class="divisor"><span class="divisor-glifo">✦</span></div>
+
+<!-- III — A RESPIRAÇÃO -->
+<section class="section" id="respiracao" data-nav="3">
+  <div class="badge">Espiritualidade · Símbolo</div>
+  <h2 class="section-titulo">III · A Respiração como Busca por Deus</h2>
+  <div class="section-linha"></div>
+
+  <p>A respiração é o instinto mais primitivo e involuntário que existe. Você não pensa para respirar — seu organismo simplesmente busca o ar. E o ar existe. Sempre esteve lá. O pulmão foi feito para ele.</p>
+
+  <div class="tabela-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Instinto</th>
+          <th>O que busca</th>
+          <th>A fonte existe?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>🐢 Tartaruga</td>
+          <td>Mar</td>
+          <td>Sim — e a tartaruga encontra</td>
+        </tr>
+        <tr>
+          <td>🐝 Abelha</td>
+          <td>Pólen</td>
+          <td>Sim — e a abelha encontra</td>
+        </tr>
+        <tr>
+          <td>🫁 Pulmão</td>
+          <td>Ar / Oxigênio</td>
+          <td>Sim — e o organismo vive</td>
+        </tr>
+        <tr>
+          <td>🙏 Alma</td>
+          <td>Deus / Sentido eterno</td>
+          <td>Sim — pelo mesmo princípio</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="citacao">
+    <p>Assim como o pulmão foi constituído para o ar e o ar para o pulmão, a alma humana parece constituída para algo transcendente — e esse algo, por lógica natural, deve existir.</p>
+  </div>
+
+  <div class="implicacoes">
+    <div class="implicacao">
+      <div class="impl-ponto"></div>
+      <div>
+        <p class="impl-titulo">A Angústia Espiritual</p>
+        <p class="impl-texto">Quando o ar está rarefeito, o organismo entra em angústia — não porque o ar não existe, mas porque ainda não o alcançou plenamente. A angústia espiritual funciona da mesma forma: não prova a ausência de Deus, mas a busca ainda em curso.</p>
+      </div>
+    </div>
+    <div class="implicacao">
+      <div class="impl-ponto"></div>
+      <div>
+        <p class="impl-titulo">Sempre de Fora para Dentro</p>
+        <p class="impl-texto">Ninguém respira para dentro de si mesmo — o ar vem de fora. Da mesma forma, o sentido não se fabrica internamente; ele é encontrado, como o mar pela tartaruga.</p>
+      </div>
+    </div>
+    <div class="implicacao">
+      <div class="impl-ponto"></div>
+      <div>
+        <p class="impl-titulo">Cada Respiração é uma Confissão</p>
+        <p class="impl-texto">Cada inspiração é, simbolicamente, uma renovação daquele primeiro momento em Gênesis 2:7. Respiramos porque ainda não estamos na Fonte — e respiramos em direção a ela.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divisor"><span class="divisor-glifo">✦</span></div>
+
+<!-- IV — OS TRÊS CÉUS -->
+<section class="section" id="ceus" data-nav="4">
+  <div class="badge">Cosmologia Bíblica</div>
+  <h2 class="section-titulo">IV · Os Três Céus e o Oxigênio</h2>
+  <div class="section-linha"></div>
+
+  <p>Paulo em 2 Coríntios 12:2 fala que foi arrebatado até o <em>terceiro céu</em> — o que implica uma estrutura cosmológica com três domínios distintos, cada um com sua própria natureza e função.</p>
+
+  <div class="tabela-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Céu</th>
+          <th>Domínio</th>
+          <th>Relação com o oxigênio</th>
+          <th>O que sustenta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1º Céu</strong></td>
+          <td>Atmosfera terrestre</td>
+          <td>Lar do oxigênio — onde sustenta a vida</td>
+          <td>Seres dependentes em jornada</td>
+        </tr>
+        <tr>
+          <td><strong>2º Céu</strong></td>
+          <td>Espaço sideral</td>
+          <td>Berçário do oxigênio — onde é forjado nas estrelas</td>
+          <td>A infraestrutura da criação</td>
+        </tr>
+        <tr>
+          <td><strong>3º Céu</strong></td>
+          <td>Habitação de Deus</td>
+          <td>Além do oxigênio — desnecessário</td>
+          <td>A presença de Deus é tudo</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="citacao">
+    <p>Quanto mais alto, menos o criado sustenta a vida. No primeiro céu, o oxigênio sustenta. No segundo, já não há. No terceiro, a própria presença de Deus é a sustentação.</p>
+  </div>
+
+  <p>O elemento que sustenta a vida humana foi forjado exatamente no céu onde Deus não habita. Como se o segundo céu fosse a cozinha — onde o alimento é preparado — mas não a mesa onde a vida plena acontece.</p>
+
+  <div class="implicacoes">
+    <div class="implicacao">
+      <div class="impl-ponto"></div>
+      <div>
+        <p class="impl-titulo">Provisão Temporária</p>
+        <p class="impl-texto">O oxigênio é uma provisão amorosa que Deus criou para sustentar no primeiro céu aquilo que, na presença plena dEle, será sustentado diretamente por Ele.</p>
+      </div>
+    </div>
+    <div class="implicacao">
+      <div class="impl-ponto"></div>
+      <div>
+        <p class="impl-titulo">Capacidade para o Terceiro Céu</p>
+        <p class="impl-texto">Somos colocados no primeiro céu, mas fomos feitos com capacidade para o terceiro. Por isso respiramos — e mesmo assim sentimos falta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divisor"><span class="divisor-glifo">✦</span></div>
+
+<!-- V — AS ESTRELAS -->
+<section class="section" id="estrelas" data-nav="5">
+  <div class="badge">Astrofísica · Criação</div>
+  <h2 class="section-titulo">V · As Estrelas, Berçários do Oxigênio</h2>
+  <div class="section-linha"></div>
+
+  <p>A astrofísica estabelece com clareza: o Big Bang produziu apenas hidrogênio e hélio. Todos os elementos mais pesados — carbono, nitrogênio, oxigênio, ferro — foram forjados no núcleo de estrelas. Quando estrelas massivas explodem em supernovas, espalham esses átomos pelo universo.</p>
+
+  <div class="destaque-biblico">
+    <p>Somos feitos de poeira de estrelas.</p>
+    <span class="ref">— Carl Sagan, Cosmos</span>
+  </div>
+
+  <p>Isso não é apenas poesia científica. É uma afirmação teológica disfarçada: o segundo céu — o espaço sideral, o domínio das estrelas — é literalmente o berçário do oxigênio que nos sustenta no primeiro céu.</p>
+
+  <div class="acordeao">
+    <div class="acord-item">
+      <button class="acord-cabecalho" onclick="toggleAcord(this)">
+        O que é a Nucleossíntese Estelar?
+        <span class="acord-seta">▾</span>
+      </button>
+      <div class="acord-corpo">
+        <div class="acord-conteudo">
+          Teoria desenvolvida por Fred Hoyle nos anos 1950. As estrelas funcionam como reatores nucleares: sob pressão e temperatura extremas, núcleos atômicos simples se fundem em elementos mais complexos. O oxigênio é forjado nas camadas externas de estrelas massivas antes de sua explosão final. Sem estrelas, não haveria oxigênio. Sem oxigênio, não haveria vida no primeiro céu.
+        </div>
+      </div>
+    </div>
+    <div class="acord-item">
+      <button class="acord-cabecalho" onclick="toggleAcord(this)">
+        Por que isso importa teologicamente?
+        <span class="acord-seta">▾</span>
+      </button>
+      <div class="acord-corpo">
+        <div class="acord-conteudo">
+          O segundo céu — domínio das estrelas, onde não há oxigênio para respirar — é exatamente o lugar onde o oxigênio é criado. Isso revela uma cadeia de dependências orquestrada: o terceiro céu (Deus) cria o segundo (estrelas), que forja os elementos que tornam o primeiro (atmosfera) habitável, para que o homem possa existir e buscar de volta o terceiro.
+        </div>
+      </div>
+    </div>
+    <div class="acord-item">
+      <button class="acord-cabecalho" onclick="toggleAcord(this)">
+        O Universo como Corredor
+        <span class="acord-seta">▾</span>
+      </button>
+      <div class="acord-corpo">
+        <div class="acord-conteudo">
+          Não é acidente que estrelas explodam e espalhem oxigênio; que a Terra esteja na distância exata do sol para ter atmosfera; que o homem tenha pulmões calibrados para esse oxigênio; e ainda assim sinta que isso não basta. Cada elo dessa cadeia é uma preparação para o próximo. O universo inteiro funciona como um corredor magnificamente equipado que leva de volta à porta de onde tudo saiu.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fluxo">
+    <div class="fluxo-item">
+      <span class="fi-titulo">3º Céu</span>
+      <span class="fi-texto">Deus cria tudo</span>
+    </div>
+    <span class="fluxo-seta">→</span>
+    <div class="fluxo-item">
+      <span class="fi-titulo">2º Céu</span>
+      <span class="fi-texto">Estrelas forjam o oxigênio</span>
+    </div>
+    <span class="fluxo-seta">→</span>
+    <div class="fluxo-item">
+      <span class="fi-titulo">1º Céu</span>
+      <span class="fi-texto">Oxigênio sustenta a vida</span>
+    </div>
+    <span class="fluxo-seta">→</span>
+    <div class="fluxo-item">
+      <span class="fi-titulo">Terra</span>
+      <span class="fi-texto">Homem busca o 3º Céu</span>
+    </div>
+  </div>
+</section>
+
+<div class="divisor"><span class="divisor-glifo">✦</span></div>
+
+<!-- VI — A ETERNIDADE -->
+<section class="section" id="eternidade" data-nav="6">
+  <div class="badge">Escatologia · Apocalipse</div>
+  <h2 class="section-titulo">VI · Apocalipse 21:23 — O Fim da Busca</h2>
+  <div class="section-linha"></div>
+
+  <div class="destaque-biblico">
+    <p>A cidade não precisa de sol nem de lua para a iluminar, pois a glória de Deus a ilumina, e o seu candeeiro é o Cordeiro.</p>
+    <span class="ref">Apocalipse 21:23</span>
+  </div>
+
+  <p>Uma das perguntas mais frequentes sobre o Apocalipse: <em>Como a cidade não terá sol, lua nem estrelas?</em> A resposta comum é vaga. Mas o raciocínio que construímos oferece uma resposta precisa e coerente.</p>
+
+  <div class="acordeao">
+    <div class="acord-item aberto">
+      <button class="acord-cabecalho" onclick="toggleAcord(this)">
+        Por que não haverá sol, lua nem estrelas?
+        <span class="acord-seta">▾</span>
+      </button>
+      <div class="acord-corpo">
+        <div class="acord-conteudo">
+          Sol, lua e estrelas pertencem ao segundo céu — o domínio da criação intermediária. Eles existem com uma função específica: forjar e sustentar as condições para a vida dependente. As estrelas forjam o oxigênio, o sol energiza a atmosfera, a lua regula os ciclos. Tudo isso é infraestrutura para seres que ainda estão em busca da Fonte. Na eternidade, essa infraestrutura se torna desnecessária — não porque foi destruída, mas porque sua função foi absorvida pela presença direta de Deus.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <span class="card-icone">🏗️</span>
+      <p class="card-titulo">Os Andaimes</p>
+      <p>Sol, lua e estrelas são andaimes. Na Nova Jerusalém, o edifício está completo — e os andaimes são removidos. Não faltam; cumpriram sua função.</p>
+    </div>
+    <div class="card">
+      <span class="card-icone">💧</span>
+      <p class="card-titulo">A Fonte</p>
+      <p>A fonte não precisa buscar água — ela é a água. Na presença plena de Deus, não há busca porque não há ausência. O instinto é satisfeito definitivamente.</p>
+    </div>
+    <div class="card">
+      <span class="card-icone">🌬️</span>
+      <p class="card-titulo">O Sopro Retorna</p>
+      <p>O sopro que Deus deu no Gênesis foi um adiantamento de Sua presença. Na eternidade, estaremos dentro do próprio Sopro — não mais buscando, mas habitando.</p>
+    </div>
+  </div>
+
+  <div class="implicacoes">
+    <div class="implicacao">
+      <div class="impl-ponto"></div>
+      <div>
+        <p class="impl-titulo">Se a glória substitui o sol</p>
+        <p class="impl-texto">Pela mesma lógica, a presença substitui o oxigênio. A glória de Deus não apenas ilumina — ela vivifica, sustenta, alimenta. É a atmosfera do terceiro céu.</p>
+      </div>
+    </div>
+    <div class="implicacao">
+      <div class="impl-ponto"></div>
+      <div>
+        <p class="impl-titulo">A Inversão Final</p>
+        <p class="impl-texto">Na terra: buscamos a Deus porque precisamos. Na presença plena: não há busca, porque não há ausência. O instinto de respirar espiritual é finalmente e completamente satisfeito.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="citacao">
+    <p>Deus habitava o terceiro céu, soprou no homem e o colocou no primeiro. As estrelas do segundo céu forjaram o oxigênio para que o homem sobrevivesse na jornada. Mas o oxigênio nunca foi o destino — foi apenas a provisão para o caminho de volta.</p>
+  </div>
+</section>
+
+<div class="divisor"><span class="divisor-glifo">✦</span></div>
+
+<!-- VII — O ARCO -->
+<section class="section" id="arco" data-nav="7">
+  <div class="badge">Síntese · Gênesis ao Apocalipse</div>
+  <h2 class="section-titulo">VII · O Arco Completo</h2>
+  <div class="section-linha"></div>
+
+  <p>Do primeiro sopro à eternidade — uma linha reta, sem contradição, sustentada pela ciência e revelada pela Escritura. Cada ponto da jornada humana encontra seu lugar neste arco.</p>
+
+  <div class="tabela-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Momento</th>
+          <th>O que acontece</th>
+          <th>Referência</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Gênesis 2:7</strong></td>
+          <td>Deus sopra a neshamah no homem — centelha do terceiro céu no primeiro</td>
+          <td>Origem</td>
+        </tr>
+        <tr>
+          <td><strong>Vida terrena</strong></td>
+          <td>O homem respira, vive, mas sente falta — o instinto do terceiro céu pulsa</td>
+          <td>Jornada</td>
+        </tr>
+        <tr>
+          <td><strong>2 Cor 12:2</strong></td>
+          <td>Paulo revela a estrutura: há um terceiro céu, habitação de Deus</td>
+          <td>Mapa</td>
+        </tr>
+        <tr>
+          <td><strong>Nucleossíntese</strong></td>
+          <td>Estrelas do 2º céu forjam o oxigênio que sustenta a jornada no 1º céu</td>
+          <td>Provisão</td>
+        </tr>
+        <tr>
+          <td><strong>Apocalipse 21:23</strong></td>
+          <td>No destino, o 2º céu é desnecessário — Deus mesmo é a atmosfera</td>
+          <td>Chegada</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="destaque-biblico">
+    <p>A saudade de Deus é anterior à experiência de Deus. E isso só faz sentido se Ele realmente existir — e se nós realmente viemos dEle.</p>
+  </div>
+
+  <p>O ser humano é o único ser que respira e mesmo assim sente falta. O animal respira e está satisfeito. O homem respira e ainda assim busca. Porque em nós foi colocado algo que o primeiro céu não pode satisfazer — fomos feitos com capacidade para o terceiro céu.</p>
+
+  <p>Imagine um recém-nascido saindo do ventre. O primeiro ato é chorar — respirar. Ele busca desesperadamente o ar que nunca respirou antes, mas para o qual seus pulmões já foram formados. O ser humano espiritual é assim: nasce neste mundo material, e imediatamente sente uma falta de algo que nunca experimentou completamente aqui — mas para o qual sua alma já foi formada desde o sopro de Deus.</p>
+
+  <div class="fluxo">
+    <div class="fluxo-item">
+      <span class="fi-titulo">Gênesis 2:7</span>
+      <span class="fi-texto">Deus sopra<br>no 3º céu</span>
+    </div>
+    <span class="fluxo-seta">→</span>
+    <div class="fluxo-item">
+      <span class="fi-titulo">Vida Terrena</span>
+      <span class="fi-texto">Homem respira<br>e busca</span>
+    </div>
+    <span class="fluxo-seta">→</span>
+    <div class="fluxo-item">
+      <span class="fi-titulo">Ap 21:23</span>
+      <span class="fi-texto">Deus É<br>o sopro</span>
+    </div>
+  </div>
+
+  <div class="citacao">
+    <p>Do sopro à eternidade — uma teologia da respiração. O instinto mais antigo do ser humano, anterior à linguagem e ao pensamento, foi colocado antes de tudo: no próprio ato da criação.</p>
+  </div>
+</section>
+
+<div class="divisor"><span class="divisor-glifo">✦</span></div>
+
+<footer>
+  <span class="footer-simbolo">🕊️</span>
+  <p class="footer-nome">Pr. João Alves</p>
+  <p class="footer-local">Vila Velha · Espírito Santo</p>
+  <a class="footer-link" href="http://www.radiomateus633.com" target="_blank">www.radiomateus633.com</a>
+  <p class="footer-nota">Do primeiro sopro ao eterno descanso — toda respiração é uma oração involuntária em busca da Fonte.</p>
+</footer>
+
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function irPara(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const navH = document.getElementById('mainNav').offsetHeight;
+  const top = el.getBoundingClientRect().top + window.scrollY - navH - 16;
+  window.scrollTo({ top, behavior: 'smooth' });
+}
+
+function toggleAcord(btn) {
+  const item = btn.closest('.acord-item');
+  item.classList.toggle('aberto');
+}
+
+// Progresso e backTop
+window.addEventListener('scroll', () => {
+  const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('backTop').classList.toggle('visivel', window.scrollY > 400);
+});
+
+// IntersectionObserver para seções
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visivel');
+      // animar passos
+      const passos = entry.target.querySelectorAll('.passo');
+      passos.forEach((p, i) => {
+        setTimeout(() => p.classList.add('visivel'), i * 140);
+      });
+      // nav ativo
+      const nav = entry.target.dataset.nav;
+      if (nav) {
+        document.querySelectorAll('.nav-btn[data-nav]').forEach(b => b.classList.remove('ativo'));
+        const ativo = document.querySelector(`.nav-btn[data-nav="${nav}"]`);
+        if (ativo) ativo.classList.add('ativo');
+      }
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.section').forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
